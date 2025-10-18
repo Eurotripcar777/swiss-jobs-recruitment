@@ -12,9 +12,18 @@ import { CheckCircle2 } from "lucide-react"
 export function ApplicationForm() {
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = () => {
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault() // evita reload da página
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData as any).toString(),
+    })
+      .then(() => setSubmitted(true))
+      .catch((err) => console.error(err))
   }
 
   if (submitted) {
@@ -57,11 +66,14 @@ export function ApplicationForm() {
           </CardHeader>
           <CardContent>
             <form
-              action="https://submit-form.com/lucamoretti762@gmail.com"
+              name="application"
               method="POST"
+              data-netlify="true"
               onSubmit={handleSubmit}
               className="space-y-6"
             >
+              <input type="hidden" name="form-name" value="application" />
+
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">Nome *</Label>
