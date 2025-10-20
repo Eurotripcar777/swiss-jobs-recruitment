@@ -20,6 +20,16 @@ export default function Home() {
       <Testimonials />
       <ApplicationForm />
       <Footer />
+
+      {/* 👇 Formulário oculto para o Netlify detectar e ativar o Forms */}
+      <form name="application" data-netlify="true" hidden>
+        <input type="text" name="firstName" />
+        <input type="text" name="lastName" />
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <textarea name="message"></textarea>
+      </form>
     </main>
   )
 }
+

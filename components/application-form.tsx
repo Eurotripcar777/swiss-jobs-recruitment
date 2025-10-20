@@ -1,52 +1,13 @@
 "use client"
 
-import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CheckCircle2 } from "lucide-react"
 
 export function ApplicationForm() {
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault() // evita reload da página
-    const form = e.currentTarget
-    const formData = new FormData(form)
-
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData as any).toString(),
-    })
-      .then(() => setSubmitted(true))
-      .catch((err) => console.error(err))
-  }
-
-  if (submitted) {
-    return (
-      <section id="apply" className="py-20 lg:py-32 bg-muted/30">
-        <div className="container mx-auto px-4 lg:px-8">
-          <Card className="max-w-2xl mx-auto border-border text-center">
-            <CardContent className="p-12 space-y-6">
-              <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                <CheckCircle2 className="text-accent" size={32} />
-              </div>
-              <h3 className="text-2xl font-bold text-card-foreground">Candidatura enviada com sucesso!</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Recebemos sua candidatura e nossa equipe irá analisá-la nos próximos dias. Você receberá um e-mail com
-                os próximos passos em breve.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-    )
-  }
-
   return (
     <section id="apply" className="py-20 lg:py-32 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
@@ -69,9 +30,10 @@ export function ApplicationForm() {
               name="application"
               method="POST"
               data-netlify="true"
-              onSubmit={handleSubmit}
+              encType="multipart/form-data"
               className="space-y-6"
             >
+              {/* Campo oculto necessário para Netlify Forms */}
               <input type="hidden" name="form-name" value="application" />
 
               <div className="grid md:grid-cols-2 gap-4">
